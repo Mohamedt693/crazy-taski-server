@@ -34,7 +34,7 @@ router.get('/google/callback',
             maxAge: 7 * 24 * 60 * 60 * 1000 
         });
 
-        res.redirect(`http://localhost:5173/auth-success?token=${accessToken}`);
+        res.redirect(`${process.env.CLIENT_URL}/auth-success?token=${accessToken}`);
     }
 );
 
