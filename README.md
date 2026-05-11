@@ -30,7 +30,7 @@ Create a .env file in the root directory and add:
 PORT=3000
 MONGO_URI=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
-CLIENT_URL=http://localhost:5173
+CLIENT_URL=https://crazy-taski-client-production.up.railway.app/
 
 ### 4. Run the server
 # Development mode
