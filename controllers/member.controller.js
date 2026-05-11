@@ -6,8 +6,8 @@ import MEMBER_MESSAGES from "../utils/messages/member.messages.js";
 
 const cleanUserAssignments = async (projectId, userId) => {
     await Task.updateMany(
-        { project: projectId, assignTo: userId },
-        { $set: { assignTo: null } }
+        { project: projectId, assignedTo: userId },
+        { $set: { assignedTo: null } }
     );
 
     await Note.updateMany(
