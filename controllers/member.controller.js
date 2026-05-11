@@ -1,6 +1,20 @@
 import Project from "../models/project.model.js";
+import Task from "../models/task.model.js";
+import Note from "../models/note.model.js";
 import MEMBER_MESSAGES from "../utils/messages/member.messages.js";
 
+
+const cleanUserAssignments = async (projectId, userId) => {
+    await Task.updateMany(
+        { project: projectId, assignTo: userId },
+        { $set: { assignTo: null } }
+    );
+
+    await Note.updateMany(
+        { project: projectId, assignedTo: userId }, 
+        { $set: { assignedTo: null } }
+    );
+};
 
 const checkProjectAccess = async (projectId, userId) => {
     const project = await Project.findById(projectId);
@@ -95,6 +109,8 @@ const removeMember = async (req, res) => {
 
         const project = access.project;
         project.members = project.members.filter(m => m.user.toString() !== userId);
+
+        await cleanUserAssignments(projectId, userId);
         await project.save();
 
         return res.success(MEMBER_MESSAGES.SUCCESS.REMOVED);
@@ -117,6 +133,8 @@ const leaveProject = async (req, res) => {
 
         const project = access.project;
         project.members = project.members.filter(m => m.user.toString() !== userId.toString());
+
+        await cleanUserAssignments(projectId, userId);
         await project.save();
 
         return res.success(MEMBER_MESSAGES.SUCCESS.LEFT);
